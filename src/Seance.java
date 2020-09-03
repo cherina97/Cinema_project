@@ -6,7 +6,7 @@ public class Seance {
     private Time startTime;
     private Time endTime;
 
-    public Seance(Movie movie, Time startTime, Time endTime) throws IllegalTimeFormatException {
+    public Seance(Movie movie, Time startTime) throws IllegalTimeFormatException {
         this.movie = movie;
         this.startTime = startTime;
         this.endTime = Time.endTime(startTime, movie.getDuration());

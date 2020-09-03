@@ -3,6 +3,11 @@ public class Movie {
     private String title;
     private Time duration;
 
+    public Movie(String title, Time duration) {
+        this.title = title;
+        this.duration = duration;
+    }
+
     public String getTitle() {
         return title;
     }
