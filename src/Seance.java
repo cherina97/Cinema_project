@@ -1,6 +1,8 @@
 import Exceptions.IllegalTimeFormatException;
 
-public class Seance {
+import java.util.Objects;
+
+public class Seance implements Comparable<Seance> {
 
     private Movie movie;
     private Time startTime;
@@ -34,5 +36,34 @@ public class Seance {
 
     public void setEndTime(Time endTime) {
         this.endTime = endTime;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Seance)) return false;
+        Seance seance = (Seance) o;
+        return Objects.equals(movie, seance.movie) &&
+                Objects.equals(startTime, seance.startTime) &&
+                Objects.equals(endTime, seance.endTime);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(movie, startTime, endTime);
+    }
+
+    @Override
+    public String toString() {
+        return "Seance{" +
+                "movie=" + movie +
+                ", startTime=" + startTime +
+                ", endTime=" + endTime +
+                '}';
+    }
+
+    @Override
+    public int compareTo(Seance o) {
+        return this.startTime.getHour() - o.startTime.getHour();
     }
 }

@@ -8,6 +8,11 @@ public class Cinema {
     private Time timeOpen;
     private Time timeClose;
 
+    public Cinema(Time timeOpen, Time timeClose) {
+        this.timeOpen = timeOpen;
+        this.timeClose = timeClose;
+    }
+
     {
         for (Days day : Days.values()) {
             schedules.put(day, new Schedule());
@@ -41,6 +46,14 @@ public class Cinema {
         }
 
         movies.remove(movie);
+    }
+
+    public void showAllMovies(){
+        movies.forEach(System.out::println);
+    }
+
+    public void showAllSeances(){
+        schedules.forEach((Days, Schedule) -> System.out.println(Days + " " + Schedule.toString()));
     }
 
     public Map<Days, Schedule> getSchedules() {

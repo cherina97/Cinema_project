@@ -1,3 +1,4 @@
+import java.util.Arrays;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -19,5 +20,12 @@ public class Schedule {
 
     public void setSeances(Set<Seance> seances) {
         this.seances = seances;
+    }
+
+    @Override
+    public String toString() {
+        return "Schedule{" +
+                "seances=" + Arrays.toString(seances.toArray()) +
+                '}';
     }
 }
