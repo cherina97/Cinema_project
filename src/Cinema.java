@@ -1,7 +1,5 @@
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class Cinema {
 
@@ -9,6 +7,55 @@ public class Cinema {
     private List<Movie> movies = new ArrayList<>();
     private Time timeOpen;
     private Time timeClose;
+
+    public Cinema(Time timeOpen, Time timeClose) {
+        this.timeOpen = timeOpen;
+        this.timeClose = timeClose;
+    }
+
+    {
+        for (Days day : Days.values()) {
+            schedules.put(day, new Schedule());
+        }
+    }
+
+    public void addMovie(Movie movie) {
+        movies.add(movie);
+    }
+
+    public void addSeance(Seance seance, String day) {
+        schedules.get(Days.valueOf(day.toUpperCase())).
+                addSeance(seance);
+    }
+
+    public void removeSeance(Seance seance, String day) {
+        schedules.get(Days.valueOf(day.toUpperCase())).
+                removeSeance(seance);
+    }
+
+    public void removeMovie(Movie movie) {
+        movies.remove(movie);
+        System.out.println("was deleted from movies");
+
+        for (Map.Entry<Days, Schedule> next : schedules.entrySet()) {
+            List<Seance> seances = next.getValue().getSeances()
+                    .stream()
+                    .filter(seance -> seance.getMovie().equals(movie))
+                    .collect(Collectors.toList());
+
+            for (Seance seance : seances) {
+                next.getValue().removeSeance(seance);
+            }
+        }
+    }
+
+    public void showAllMovies(){
+        movies.forEach(System.out::println);
+    }
+
+    public void showAllSeances(){
+        schedules.forEach((Days, Schedule) -> System.out.println(Days + " " + Schedule.toString()));
+    }
 
     public Map<Days, Schedule> getSchedules() {
         return schedules;
@@ -41,4 +88,6 @@ public class Cinema {
     public void setTimeClose(Time timeClose) {
         this.timeClose = timeClose;
     }
+
+
 }
