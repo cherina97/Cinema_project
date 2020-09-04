@@ -55,11 +55,8 @@ public class Seance implements Comparable<Seance> {
 
     @Override
     public String toString() {
-        return "Seance{" +
-                "movie=" + movie +
-                ", startTime=" + startTime +
-                ", endTime=" + endTime +
-                '}';
+        return movie + ", startTime=" + startTime +
+                ", endTime=" + endTime + '}';
     }
 
     @Override

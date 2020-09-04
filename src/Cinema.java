@@ -34,18 +34,19 @@ public class Cinema {
     }
 
     public void removeMovie(Movie movie) {
+        movies.remove(movie);
+        System.out.println("was deleted from movies");
+
         for (Map.Entry<Days, Schedule> next : schedules.entrySet()) {
-            List<Seance> seances = next.getValue().getSeances().
-                    stream().
-                    filter(seance -> seance.getMovie().equals(movie)).
-                    collect(Collectors.toList());
+            List<Seance> seances = next.getValue().getSeances()
+                    .stream()
+                    .filter(seance -> seance.getMovie().equals(movie))
+                    .collect(Collectors.toList());
 
             for (Seance seance : seances) {
                 next.getValue().removeSeance(seance);
             }
         }
-
-        movies.remove(movie);
     }
 
     public void showAllMovies(){
@@ -87,4 +88,6 @@ public class Cinema {
     public void setTimeClose(Time timeClose) {
         this.timeClose = timeClose;
     }
+
+
 }

@@ -19,19 +19,26 @@ public class Main {
                 case 2:
                     addSeance();
                     break;
+                case 3:
+                    removeSeance();
+                    break;
+                case 4:
+                    removeMovie();
+                    break;
                 case 5:
                     showAllMovies();
                     break;
                 case 6:
                     showAllSeances();
                     break;
+                case 7:
+                    showWorkingTime();
+                    break;
             }
             showMenu();
             System.out.println("Enter a number:");
             choice = scanner.nextInt();
         }
-
-
     }
 
     public static void addMovie() throws IllegalTimeFormatException {
@@ -42,14 +49,31 @@ public class Main {
     public static void addSeance() throws IllegalTimeFormatException {
         System.out.println("\tSelect day for this seance: ");
         String day = scanner.next();
-        System.out.println("\tWhich movie would you like to add to seance?");
+        Seance seance = inputSeance();
+        cinema.addSeance(seance, day);
+    }
+
+    public static void removeSeance() throws IllegalTimeFormatException {
+        System.out.println("\tSelect day for this seance: ");
+        String day = scanner.next();
+        Seance seance = inputSeance();
+        cinema.removeSeance(seance, day);
+    }
+
+    public static void removeMovie() throws IllegalTimeFormatException {
+        Movie movie = inputMovie();
+        cinema.removeMovie(movie);
+    }
+
+    public static Seance inputSeance() throws IllegalTimeFormatException {
+        System.out.println("\tWhich movie would you like to add/remove to seance?");
         showAllMovies();
         System.out.println("\tSelect:");
         Movie movie = inputMovie();
-        System.out.println("\tEnter start time for this seance: ");
+        System.out.println("\tEnter start time for/of this seance: ");
         Time time = inputTime();
-        Seance seance = new Seance(movie, time);
-        cinema.addSeance(seance, day);
+
+        return new Seance(movie, time);
     }
 
     public static Movie inputMovie() throws IllegalTimeFormatException {
@@ -61,12 +85,20 @@ public class Main {
         return new Movie(title, duration);
     }
 
-    public static void showAllMovies(){
+    public static void showAllMovies() {
         cinema.showAllMovies();
     }
 
-    public static void showAllSeances(){
+    public static void showAllSeances() {
         cinema.showAllSeances();
+    }
+
+    public static void showWorkingTime(){
+        System.out.println("Working time: ");
+        Time timeOpen = cinema.getTimeOpen();
+        Time timeClose = cinema.getTimeClose();
+        System.out.println(timeOpen.getHour() + ":" + timeOpen.getMin() + " - "
+         + timeClose.getHour() + ":" + timeClose.getMin());
     }
 
     public static void enterWorkingTime() throws IllegalTimeFormatException {
@@ -78,7 +110,6 @@ public class Main {
 //        System.out.println("Working time: " + timeOpen + " - " + timeClose);
         cinema = new Cinema(new Time(0, 9), new Time(30, 22));
     }
-
 
 
     private static Time inputTime() throws IllegalTimeFormatException {
@@ -100,6 +131,7 @@ public class Main {
         System.out.println("\t 4.Remove movie from schedule and seances");
         System.out.println("\t 5.Show all movies");
         System.out.println("\t 6.Show all seances");
+        System.out.println("\t 7.Cinema working time");
         System.out.println("0.Exit");
     }
 }
