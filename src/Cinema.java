@@ -34,13 +34,14 @@ public class Cinema {
     }
 
     public void removeMovie(Movie movie) {
-        movies.remove(movie);
-        System.out.println("was deleted from movies");
+        movies.removeIf(movie1 ->
+                movie1.getTitle().equalsIgnoreCase(movie.getTitle()));
 
         for (Map.Entry<Days, Schedule> next : schedules.entrySet()) {
             List<Seance> seances = next.getValue().getSeances()
                     .stream()
-                    .filter(seance -> seance.getMovie().equals(movie))
+                    .filter(seance ->
+                            seance.getMovie().getTitle().equalsIgnoreCase(movie.getTitle()))
                     .collect(Collectors.toList());
 
             for (Seance seance : seances) {
