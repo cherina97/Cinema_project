@@ -1,6 +1,6 @@
 import Exceptions.IllegalTimeFormatException;
 
-import java.util.Scanner;
+import java.util.*;
 
 public class Main {
     static Scanner scanner = new Scanner(System.in);
@@ -50,7 +50,52 @@ public class Main {
         System.out.println("\tSelect day for this seance: ");
         String day = scanner.next();
         Seance seance = inputSeance();
-        cinema.addSeance(seance, day);
+
+        if (checkIfClose(seance)) {
+            System.out.println("In this period cinema is closed. Choose another time. ");
+        } else if (checkIfTimeIsFree(seance, day)) {
+            System.out.println("This time is busy. Choose another time.");
+        } else {
+            cinema.addSeance(seance, day);
+        }
+    }
+
+    public static boolean checkIfClose(Seance seance) {
+        boolean flag = false;
+        int hourStart = seance.getStartTime().getHour();
+        int hourEnd = seance.getEndTime().getHour();
+        int hourOpen = cinema.getTimeOpen().getHour();
+        int hourClose = cinema.getTimeClose().getHour();
+
+        if ((hourStart < hourOpen) || (hourEnd > hourClose)) {
+            flag = true;
+        }
+        return flag;
+    }
+
+    public static boolean checkIfTimeIsFree(Seance seance, String day) {
+        Schedule schedule = cinema.getSchedules().get(Days.valueOf(day.toUpperCase(Locale.ENGLISH)));
+        Set<Seance> seancesPerDay = schedule.getSeances();
+        boolean flag = false;
+
+        int hourStart = seance.getStartTime().getHour();
+        int hourEnd = seance.getEndTime().getHour();
+
+        for (Seance oneSeance : seancesPerDay) {
+            int hourStartExist = oneSeance.getStartTime().getHour();
+            int hourEndExist = oneSeance.getEndTime().getHour();
+
+            if ((hourStart < hourStartExist && hourEnd < hourStartExist) ||
+                    (hourStart > hourEndExist && hourEnd > hourEndExist)) {
+                flag = false;
+            }
+
+            if ((hourStart <= hourEndExist && hourStart >= hourStartExist) ||
+                    (hourEnd <= hourEndExist && hourEnd >= hourStartExist)) {
+                flag = true;
+            }
+        }
+        return flag;
     }
 
     public static void removeSeance() throws IllegalTimeFormatException {
@@ -93,12 +138,12 @@ public class Main {
         cinema.showAllSeances();
     }
 
-    public static void showWorkingTime(){
+    public static void showWorkingTime() {
         System.out.println("Working time: ");
         Time timeOpen = cinema.getTimeOpen();
         Time timeClose = cinema.getTimeClose();
         System.out.println(timeOpen.getHour() + ":" + timeOpen.getMin() + " - "
-         + timeClose.getHour() + ":" + timeClose.getMin());
+                + timeClose.getHour() + ":" + timeClose.getMin());
     }
 
     public static void enterWorkingTime() throws IllegalTimeFormatException {

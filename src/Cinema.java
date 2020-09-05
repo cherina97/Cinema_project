@@ -20,7 +20,15 @@ public class Cinema {
     }
 
     public void addMovie(Movie movie) {
-        movies.add(movie);
+        Optional<Movie> optionalMovie = movies.stream()
+                .filter(movie1 -> movie1.getTitle().equalsIgnoreCase(movie.getTitle()))
+                .findAny();
+        if (optionalMovie.isPresent()){
+            System.out.println("Such movie " + movie.toString() + " is already exists");
+        } else {
+            movies.add(movie);
+            System.out.println(movie.toString() + " was successfully added to MovieLibrary");
+        }
     }
 
     public void addSeance(Seance seance, String day) {
@@ -48,6 +56,7 @@ public class Cinema {
                 next.getValue().removeSeance(seance);
             }
         }
+        System.out.println(movie.toString() + " was successfully deleted from library and seances.");
     }
 
     public void showAllMovies(){
